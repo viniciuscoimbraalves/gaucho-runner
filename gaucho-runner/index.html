@@ -1,0 +1,33 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gaúcho Runner — a cavalo</title>
+  <link rel="stylesheet" href="style.css?v=51" />
+</head>
+<body>
+  <canvas
+    id="game"
+    role="application"
+    aria-label="Corrida infinita em pixel art: um gaúcho montado a cavalo pula cactos e desvia de quero-queros."
+  ></canvas>
+
+  <div id="safe-area-probe" aria-hidden="true"></div>
+
+  <div id="touch-controls" class="touch-controls">
+    <button id="touch-jump" type="button" aria-label="Pular">PULAR</button>
+  </div>
+
+  <div id="rotate-hint" role="dialog" aria-modal="true" aria-labelledby="rotate-title" hidden>
+    <div class="rotate-card">
+      <h2 id="rotate-title">Melhor na horizontal</h2>
+      <p>Vire o celular para jogar com mais espaço. Dá para continuar em pé também.</p>
+      <button id="rotate-dismiss" type="button">Continuar em pé</button>
+    </div>
+  </div>
+
+  <script src="municipios.js?v=51"></script>
+  <script src="game.js?v=51"></script>
+</body>
+</html>
