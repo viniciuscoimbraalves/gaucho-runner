@@ -1142,11 +1142,11 @@ const QUERO_FRAMES = [
 
   // ------------------------------------------------------------------- menu
   const ABOUT_LINES = [
-    GAME_NAME + ' É UMA CORRIDA',
-    'INFINITA A CAVALO NO PAMPA.',
+    'O ' + GAME_NAME + ' É UMA CORRIDA',
+    'PELOS PAGOS DO RIO GRANDE DO SUL!',
     '',
-    'CADA OBSTÁCULO VENCIDO CONQUISTA',
-    'UM MUNICÍPIO DO RS — SÃO 497.',
+    'CADA OBSTÁCULO VENCIDO SIGNIFICA',
+    'UM MUNICÍPIO GAÚCHO CONQUISTADO.',
     '',
     'CONTATO: contato@viniciuscoimbra.com',
     '',
@@ -1215,7 +1215,7 @@ const QUERO_FRAMES = [
     let ty = py + 12 + 24;
     const textLines = [];
     for (const line of lines) {
-      textLines.push({ text: line, x: px + 16, y: ty });
+      textLines.push({ text: line, x: cx, y: ty });
       ty += lineStep;
     }
 
@@ -1280,7 +1280,7 @@ const QUERO_FRAMES = [
     out.fillText(menuLayout.title, cx, menuLayout.titleY * sy);
 
     out.font = cssFont(500, clampCss(11, cssW * 0.0135, 17));
-    out.textAlign = 'left';
+    out.textAlign = 'center';
     out.textBaseline = 'top';
     for (const line of menuLayout.lines) {
       if (line.text) out.fillText(line.text, line.x * sx, line.y * sy);
