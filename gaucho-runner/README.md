@@ -1,4 +1,4 @@
-# Gaúcho Runner — a cavalo
+# Pampa Runner — a cavalo
 
 O jogo do dinossauro do Chrome recriado a partir de uma **imagem de referência**:
 um gaúcho montado a cavalo em pixel art 1-bit (cinza-claro + preto), correndo pelo pampa

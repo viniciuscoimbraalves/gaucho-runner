@@ -6,7 +6,7 @@ documentação voltada a quem joga.
 
 ## Visão geral
 
-- **Gaúcho Runner**: corrida infinita em pixel art, clone do jogo do dinossauro
+- **Pampa Runner**: corrida infinita em pixel art, clone do jogo do dinossauro
   do Chrome, com um gaúcho a cavalo no pampa.
 - O arquivo `index.html` da raiz redireciona para `gaucho-runner/index.html`.
 - **Sem build, sem dependências, sem npm.** Canvas puro, JavaScript e CSS.

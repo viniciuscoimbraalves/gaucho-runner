@@ -1,5 +1,5 @@
 /*
- * Gaúcho Runner — edição "a cavalo"
+ * Pampa Runner — edição "a cavalo"
  * ---------------------------------
  * Clone do jogo do dinossauro do Chrome: um gaúcho montado num cavalo
  * atravessa o campo pulando cactos e desviando de quero-queros.
@@ -37,6 +37,7 @@
     ? window.MUNICIPIOS
     : ['Acegua'];
   const UI_FONT = 'Consolas, "Lucida Console", "SFMono-Regular", Menlo, "Courier New", monospace';
+  const GAME_NAME = 'PAMPA RUNNER';
 
   const CFG = {
     gravity: 0.6,
@@ -1141,7 +1142,7 @@ const QUERO_FRAMES = [
 
   // ------------------------------------------------------------------- menu
   const ABOUT_LINES = [
-    'GAÚCHO RUNNER É UMA CORRIDA',
+    GAME_NAME + ' É UMA CORRIDA',
     'INFINITA A CAVALO NO PAMPA.',
     '',
     'CADA OBSTÁCULO VENCIDO CONQUISTA',
@@ -1169,7 +1170,7 @@ const QUERO_FRAMES = [
     if (screen === 'menu') {
       const titleCell = UNIT_PX * 2;
       const titleY = Math.max(12, H * 0.1);
-      const tw = 13 * 6 * titleCell - titleCell;
+      const tw = GAME_NAME.length * 6 * titleCell - titleCell;
       ctx.fillStyle = p.bg;
       ctx.fillRect(cx - tw / 2 - 12, titleY - 10, tw + 24, titleCell * 7 + 42);
 
@@ -1245,12 +1246,12 @@ const QUERO_FRAMES = [
       let titleSize = clampCss(24, cssW * 0.04, 50);
       const maxTitleW = cssW * 0.86;
       out.font = cssFont(700, titleSize);
-      const titleW = out.measureText('GAÚCHO RUNNER').width;
+      const titleW = out.measureText(GAME_NAME).width;
       if (titleW > maxTitleW) {
         titleSize *= maxTitleW / titleW;
         out.font = cssFont(700, titleSize);
       }
-      out.fillText('GAÚCHO RUNNER', cx, menuLayout.titleY * sy);
+      out.fillText(GAME_NAME, cx, menuLayout.titleY * sy);
 
       out.font = cssFont(500, clampCss(11, cssW * 0.012, 16));
       out.fillText('A CAVALO', cx, menuLayout.subtitleY * sy);
@@ -1409,7 +1410,7 @@ const QUERO_FRAMES = [
     ctx.fillStyle = p.fg;
     ctx.globalAlpha = 1;
     ctx.font = 'bold 24px "Courier New", ui-monospace, monospace';
-    ctx.fillText('GAÚCHO RUNNER', W / 2, Math.max(24, GROUND_Y - 152));
+    ctx.fillText(GAME_NAME, W / 2, Math.max(24, GROUND_Y - 152));
 
     ctx.fillStyle = p.dim;
     ctx.font = '19px "Courier New", ui-monospace, monospace';
