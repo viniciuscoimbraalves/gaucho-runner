@@ -158,7 +158,8 @@ Parâmetros de URL (em `gaucho-runner/index.html`):
 - `&cidades=40` — define quantos municípios já foram conquistados;
 - `&touch=1` — força o layout/controles de toque no desktop;
 - `&rotate=0` — esconde o aviso de paisagem;
-- `?screen=about` / `?screen=contact` — abre os painéis.
+- `?screen=about` — abre o painel SOBRE (único painel; o antigo
+  `?screen=contact` cai nele por compatibilidade).
 
 Os antigos `&score=` e `&sec=` foram removidos; não os reintroduza.
 

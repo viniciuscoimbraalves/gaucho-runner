@@ -40,11 +40,11 @@ O jogo é desenhado num canvas de **baixa resolução** e depois ampliado:
 ## Tela inicial
 
 Ao abrir, o jogo mostra um menu no mesmo estilo (fundo cinza-claro, tinta
-preta, mesma fonte monoespaçada do jogo): **JOGAR**, **SOBRE** e **CONTATO**,
-com o cavalo galopando ao fundo.
-Navegue com as setas + Enter, ou clique/tocque. SOBRE e CONTATO abrem painéis com
-um botão VOLTAR, e `Esc` durante o jogo volta ao menu.
-Os contatos em `CONTACT_LINES` (no `game.js`) são placeholders — troque pelos seus.
+preta, mesma fonte monoespaçada do jogo): **JOGAR** e **SOBRE**, com o cavalo
+galopando ao fundo.
+Navegue com as setas + Enter, ou clique/tocque. SOBRE abre um painel com um
+botão VOLTAR, e `Esc` durante o jogo volta ao menu.
+O texto e o contato ficam em `ABOUT_LINES` (no `game.js`).
 
 ## Tela cheia
 

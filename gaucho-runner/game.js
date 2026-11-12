@@ -206,7 +206,7 @@
   let lastSpawnType = null;
   let lastGroundType = null;
 
-  // tela atual: menu | about | contact | game
+  // tela atual: menu | about | game
   let screen = 'menu';
   let menuFocus = 0;
   let menuButtons = [];
@@ -1141,22 +1141,13 @@ const QUERO_FRAMES = [
 
   // ------------------------------------------------------------------- menu
   const ABOUT_LINES = [
-    'GAÚCHO RUNNER É UM CLONE DO JOGO',
-    'DO DINOSSAURO DO CHROME, COM UM',
-    'GAÚCHO A CAVALO NO PAMPA.',
+    'GAÚCHO RUNNER É UMA CORRIDA',
+    'INFINITA A CAVALO NO PAMPA.',
     '',
-    'CANVAS PURO, TRÊS TONS, 8 QUADROS',
-    'DE GALOPE E 4 DE QUERO-QUERO.',
+    'CADA OBSTÁCULO VENCIDO CONQUISTA',
+    'UM MUNICÍPIO DO RS — SÃO 497.',
     '',
-    'FEITO PARA APRENDER E SE DIVERTIR.',
-    'A CADA OBSTÁCULO, UM MUNICÍPIO DO RS.',
-  ];
-
-  const CONTACT_LINES = [
-    'FALE COM A GENTE',
-    '',
-    'EMAIL: CONTATO@EXEMPLO.COM',
-    'SITE: EXEMPLO.COM',
+    'CONTATO: contato@viniciuscoimbra.com',
     '',
     'OBRIGADO POR JOGAR!',
   ];
@@ -1188,7 +1179,7 @@ const QUERO_FRAMES = [
       const bx = cx - bw / 2;
       const by = Math.max(titleY + titleCell * 7 + 44, H * 0.36);
 
-      const labels = ['JOGAR', 'SOBRE', 'CONTATO'];
+      const labels = ['JOGAR', 'SOBRE'];
       menuButtons = [];
       for (let i = 0; i < labels.length; i++) {
         const r = { x: bx, y: by + i * (bh + gap), w: bw, h: bh, i };
@@ -1200,13 +1191,12 @@ const QUERO_FRAMES = [
         kind: 'menu',
         titleY,
         subtitleY: titleY + titleCell * 7 + 8,
-        hintY: by + 3 * (bh + gap) + 8,
+        hintY: by + labels.length * (bh + gap) + 8,
       };
       return;
     }
 
-    const isAbout = screen === 'about';
-    const lines = isAbout ? ABOUT_LINES : CONTACT_LINES;
+    const lines = ABOUT_LINES;
     const cell = UNIT_PX;
     const lineStep = cell * 9 + 2;
     const bh = 24;
@@ -1234,8 +1224,8 @@ const QUERO_FRAMES = [
     menuButtons = [r];
 
     menuLayout = {
-      kind: isAbout ? 'about' : 'contact',
-      title: isAbout ? 'SOBRE' : 'CONTATO',
+      kind: 'about',
+      title: 'SOBRE',
       titleY: py + 12,
       lines: textLines,
     };
@@ -1282,7 +1272,7 @@ const QUERO_FRAMES = [
       return;
     }
 
-    // SOBRE / CONTATO
+    // SOBRE
     out.font = cssFont(700, clampCss(18, cssW * 0.026, 34));
     out.textAlign = 'center';
     out.textBaseline = 'top';
@@ -1308,7 +1298,7 @@ const QUERO_FRAMES = [
   function activateMenu(i) {
     if (screen === 'menu') {
       if (i === 0) { startGame(); return; }
-      screen = i === 1 ? 'about' : 'contact';
+      screen = 'about';
       menuFocus = 0;
       canvas.style.cursor = 'default';
       fitCanvas();
@@ -1645,10 +1635,10 @@ const QUERO_FRAMES = [
       if (screen === 'menu') {
         if (e.code === 'ArrowDown' || e.code === 'KeyS') {
           e.preventDefault();
-          menuFocus = (menuFocus + 1) % 3;
+          menuFocus = (menuFocus + 1) % 2;
         } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
           e.preventDefault();
-          menuFocus = (menuFocus + 2) % 3;
+          menuFocus = (menuFocus + 2) % 2;
         } else if (e.code === 'Enter' || e.code === 'Space') {
           e.preventDefault();
           activateMenu(menuFocus);
@@ -1805,7 +1795,8 @@ const QUERO_FRAMES = [
 
   readSafeArea();
 
-  if (params.get('screen') === 'about' || params.get('screen') === 'contact') screen = params.get('screen');
+  // ?screen=about abre o painel SOBRE (o antigo ?screen=contact cai aqui também)
+  if (params.get('screen') === 'about' || params.get('screen') === 'contact') screen = 'about';
 
   const debug = params.get('debug');
   if (debug) {
