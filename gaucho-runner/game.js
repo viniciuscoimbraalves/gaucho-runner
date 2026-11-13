@@ -1,5 +1,5 @@
 /*
- * Pampa Runner — edição "a cavalo"
+ * Pampa Runner
  * ---------------------------------
  * Clone do jogo do dinossauro do Chrome: um gaúcho montado num cavalo
  * atravessa o campo pulando cactos e desviando de quero-queros.
@@ -38,6 +38,7 @@
     : ['Acegua'];
   const UI_FONT = 'Consolas, "Lucida Console", "SFMono-Regular", Menlo, "Courier New", monospace';
   const GAME_NAME = 'PAMPA RUNNER';
+  const CONTACT_EMAIL = 'contato@viniciuscoimbra.com';
 
   const CFG = {
     gravity: 0.6,
@@ -214,6 +215,8 @@
   let overButton = null;
   let restartButton = null;
   let menuLayout = null;
+  // aviso "COPIADO!" no botão de e-mail, em ms de performance.now()
+  let copyHintUntil = 0;
 
   // céu / cenário (recalculados no resize)
   let CLOUDS = [];
@@ -1148,9 +1151,7 @@ const QUERO_FRAMES = [
     'CADA OBSTÁCULO VENCIDO SIGNIFICA',
     'UM MUNICÍPIO GAÚCHO CONQUISTADO.',
     '',
-    'CONTATO: contato@viniciuscoimbra.com',
-    '',
-    'OBRIGADO POR JOGAR!',
+    'CONTATO: ' + CONTACT_EMAIL,
   ];
 
   function drawButton(p, r, label, focused) {
@@ -1191,7 +1192,6 @@ const QUERO_FRAMES = [
       menuLayout = {
         kind: 'menu',
         titleY,
-        subtitleY: titleY + titleCell * 7 + 8,
         hintY: by + labels.length * (bh + gap) + 8,
       };
       return;
@@ -1219,10 +1219,20 @@ const QUERO_FRAMES = [
       ty += lineStep;
     }
 
-    const bw = Math.min(150, pw * 0.45);
-    const r = { x: cx - bw / 2, y: py + ph - bh - 12, w: bw, h: bh, i: 0 };
-    drawButton(p, r, 'VOLTAR', true);
-    menuButtons = [r];
+    // dois botões lado a lado: copiar o e-mail e voltar
+    const btnGap = 12;
+    const bw = Math.min(150, (pw - 24 - btnGap) / 2);
+    const by = py + ph - bh - 12;
+    const copiado = performance.now() < copyHintUntil;
+    const copyBtn = {
+      x: cx - bw - btnGap / 2, y: by, w: bw, h: bh, i: 0, action: 'copy',
+    };
+    const backBtn = {
+      x: cx + btnGap / 2, y: by, w: bw, h: bh, i: 1, action: 'back',
+    };
+    drawButton(p, copyBtn, copiado ? 'COPIADO!' : 'COPIAR E-MAIL', menuFocus === 0);
+    drawButton(p, backBtn, 'VOLTAR', menuFocus === 1);
+    menuButtons = [copyBtn, backBtn];
 
     menuLayout = {
       kind: 'about',
@@ -1252,9 +1262,6 @@ const QUERO_FRAMES = [
         out.font = cssFont(700, titleSize);
       }
       out.fillText(GAME_NAME, cx, menuLayout.titleY * sy);
-
-      out.font = cssFont(500, clampCss(11, cssW * 0.012, 16));
-      out.fillText('A CAVALO', cx, menuLayout.subtitleY * sy);
 
       const btnSize = clampCss(14, cssW * 0.018, 24);
       for (const b of menuButtons) {
@@ -1286,13 +1293,39 @@ const QUERO_FRAMES = [
       if (line.text) out.fillText(line.text, line.x * sx, line.y * sy);
     }
 
-    const b = menuButtons[0];
-    if (b) {
-      out.font = cssFont(700, clampCss(11, cssW * 0.014, 18));
+    // botões do painel (copiar e-mail / voltar)
+    out.font = cssFont(700, clampCss(11, cssW * 0.014, 18));
+    for (const b of menuButtons) {
       out.fillStyle = b.focused ? p.bg : p.fg;
       out.textAlign = 'center';
       out.textBaseline = 'middle';
       out.fillText(b.label, (b.x + b.w / 2) * sx, (b.y + b.h / 2) * sy);
+    }
+  }
+
+  function copyEmail() {
+    const done = () => { copyHintUntil = performance.now() + 1600; };
+
+    // fallback: funciona mesmo sem a Clipboard API (contexto inseguro)
+    const legacy = () => {
+      const ta = document.createElement('textarea');
+      ta.value = CONTACT_EMAIL;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      if (ok) done();
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(CONTACT_EMAIL).then(done, legacy);
+    } else {
+      legacy();
     }
   }
 
@@ -1306,6 +1339,14 @@ const QUERO_FRAMES = [
       updateRotateHint();
       return;
     }
+
+    // painel SOBRE: cada botão tem sua ação
+    const btn = menuButtons[i];
+    if (btn && btn.action === 'copy') {
+      copyEmail();
+      return;
+    }
+
     screen = 'menu';
     menuFocus = 0;
     canvas.style.cursor = 'default';
@@ -1341,13 +1382,8 @@ const QUERO_FRAMES = [
     const pt = pointerLogical(e);
     for (const b of menuButtons) {
       if (pt.x >= b.x && pt.x <= b.x + b.w && pt.y >= b.y && pt.y <= b.y + b.h) {
-        if (screen === 'menu') {
-          menuFocus = b.i;
-          activateMenu(b.i);
-        } else {
-          screen = 'menu';
-          menuFocus = 0;
-        }
+        menuFocus = b.i;
+        activateMenu(b.i);
         return;
       }
     }
@@ -1414,7 +1450,7 @@ const QUERO_FRAMES = [
 
     ctx.fillStyle = p.dim;
     ctx.font = '19px "Courier New", ui-monospace, monospace';
-    ctx.fillText('a cavalo — espaço ou toque para começar', W / 2, Math.max(44, GROUND_Y - 124));
+    ctx.fillText('espaço ou toque para começar', W / 2, Math.max(44, GROUND_Y - 124));
 
     ctx.font = '16px "Courier New", ui-monospace, monospace';
     ctx.fillText('↑ pular  ·  M som', W / 2, Math.max(66, GROUND_Y - 92));
@@ -1644,10 +1680,22 @@ const QUERO_FRAMES = [
           e.preventDefault();
           activateMenu(menuFocus);
         }
-      } else if (e.code === 'Escape' || e.code === 'Enter' || e.code === 'Space' || e.code === 'Backspace') {
-        e.preventDefault();
-        screen = 'menu';
-        menuFocus = 0;
+      } else if (screen === 'about') {
+        const n = menuButtons.length || 1;
+        if (e.code === 'ArrowLeft' || e.code === 'ArrowUp') {
+          e.preventDefault();
+          menuFocus = (menuFocus + n - 1) % n;
+        } else if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
+          e.preventDefault();
+          menuFocus = (menuFocus + 1) % n;
+        } else if (e.code === 'Enter' || e.code === 'Space') {
+          e.preventDefault();
+          activateMenu(menuFocus);
+        } else if (e.code === 'Escape' || e.code === 'Backspace') {
+          e.preventDefault();
+          screen = 'menu';
+          menuFocus = 0;
+        }
       }
       return;
     }

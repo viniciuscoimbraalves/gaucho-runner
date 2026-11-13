@@ -1,4 +1,4 @@
-# Pampa Runner — a cavalo
+# Pampa Runner
 
 O jogo do dinossauro do Chrome recriado a partir de uma **imagem de referência**:
 um gaúcho montado a cavalo em pixel art 1-bit (cinza-claro + preto), correndo pelo pampa
@@ -42,9 +42,9 @@ O jogo é desenhado num canvas de **baixa resolução** e depois ampliado:
 Ao abrir, o jogo mostra um menu no mesmo estilo (fundo cinza-claro, tinta
 preta, mesma fonte monoespaçada do jogo): **JOGAR** e **SOBRE**, com o cavalo
 galopando ao fundo.
-Navegue com as setas + Enter, ou clique/tocque. SOBRE abre um painel com um
-botão VOLTAR, e `Esc` durante o jogo volta ao menu.
-O texto e o contato ficam em `ABOUT_LINES` (no `game.js`).
+Navegue com as setas + Enter, ou clique/tocque. SOBRE abre um painel com dois
+botões — **COPIAR E-MAIL** e **VOLTAR** — e `Esc` durante o jogo volta ao menu.
+O texto e o contato ficam em `ABOUT_LINES` e `CONTACT_EMAIL` (no `game.js`).
 
 ## Tela cheia
 
